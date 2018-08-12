@@ -1,0 +1,11 @@
+﻿<Window x:Class="LowCurrentMeter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:LowCurrentMeter"
+        Title="MainWindow"
+        Height="350"
+        Width="525">
+    <Grid>
+        <local:TimeGraph x:Name="mGraphCurrent"/>
+    </Grid>
+</Window>
