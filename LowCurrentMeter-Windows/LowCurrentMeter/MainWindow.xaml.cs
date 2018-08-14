@@ -25,7 +25,7 @@ namespace LowCurrentMeter
 
         // PRIVATE
 
-        private const int MAX_POINTS = 100;
+        private const long MAX_POINTS = 3000;
         private const double MAX_OUTPUT_VOLTAGE = 15;
 
         private SerialPort mSerialPort = null;
@@ -52,26 +52,26 @@ namespace LowCurrentMeter
                 mSerialPort.DataReceived += SerialPort_DataReceived;
                 mSerialPort.Open();
             }
-
-            //serial.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(Recieve);
         }
 
         private void SerialPort_DataReceived(object s, SerialDataReceivedEventArgs e)
         {
             SerialPort port = s as SerialPort;
             byte[] data = new byte[port.BytesToRead];
-            port.Read(data, 0, data.Length);
 
-            //string[] asciiData = Encoding.Default.GetString(data).Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-
-            IList<double> points = new List<double>(data.Length);
-            for(int i = 0; i < data.Length - 1; i++)
+            if (data.Length > 0)
             {
-                ArraySegment<byte> arraySegment = new ArraySegment<byte>(data, i,2);
-                points.Add(BitConverter.ToUInt16(arraySegment.Array, 0));
-            }
+                port.Read(data, 0, data.Length);
 
-            mGraphCurrent.AddPoints(points);
+                List<double> points = new List<double>(data.Length);
+                for(int i = 0; i < data.Length - 1; i++)
+                {
+                    ArraySegment<byte> arraySegment = new ArraySegment<byte>(data, i,2);
+                    points.Add(BitConverter.ToUInt16(arraySegment.Array, 0));
+                }
+
+                mGraphCurrent.AddPoints(points);
+            }
         }
 
     }

@@ -53,23 +53,35 @@ namespace LowCurrentMeter
             axis.MaxValue = max;
         }
 
-        public void AddPoints(IList<double> values)
+        public void AddPoints(List<double> values)
         {
-            foreach (double value in values)
-            {
-                mData.Add(value);
-            }
+            mData.AddRange(values);
             TrimData();
 
-            //Dispatcher.Invoke(() =>
-            //{
-            //    mCurrentValue.Text = mData[mData.Count - 1].ToString();
-            //}); 
+            double currentValue = values[values.Count - 1];
+
+
+            if (mUiUpdateCount > UI_UPDATE_PERIOD)
+            {
+                App.Current.Dispatcher.BeginInvoke((Action)delegate
+                {
+                    mCurrentValue.Text = currentValue.ToString();
+                }, null);
+                mUiUpdateCount = 0;
+            }
+            else
+            {
+                mUiUpdateCount++;
+            }
         }
 
         /* PRIVATE */
 
+        private const int DATA_BUFFER_SIZE = 100;
+        private const int UI_UPDATE_PERIOD = 50;
+
         private long mMaxPoints = 0;
+        public int mUiUpdateCount = 0;
 
         private void TrimData()
         {
