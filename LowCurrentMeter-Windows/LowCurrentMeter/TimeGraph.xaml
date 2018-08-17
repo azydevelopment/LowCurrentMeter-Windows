@@ -37,9 +37,9 @@
 
             <lvc:CartesianChart.Resources>
                 <Style TargetType="lvc:LineSeries">
-                    <Setter Property="StrokeThickness" Value="3"/>
-                    <Setter Property="Stroke" Value="White"/>
-                    <Setter Property="Fill" Value="#4EFFFFFF"/>
+                    <Setter Property="StrokeThickness" Value="1"/>
+                    <Setter Property="Stroke" Value="Ivory"/>
+                    <Setter Property="Fill" Value="#55FFFFFF"/>
                     <Setter Property="PointGeometrySize" Value="0"/>
                     <Setter Property="LineSmoothness" Value="0"/>
                 </Style>
@@ -72,43 +72,17 @@
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Column="1"
-                        Orientation="Horizontal"
-                        VerticalAlignment="Center"
-                        Margin="20,10,5,10">
-
-                <TextBlock Name="mCurrentValue"
-                       x:FieldModifier="private"
-                       Grid.Column="0"
-                       TextAlignment="Left"
-                       FontWeight="Bold"
-                       Foreground="#555555"
-                       FontSize="24"
-                       VerticalAlignment="Bottom"></TextBlock>
-
-                <TextBlock Name="mUnit"
-                       x:FieldModifier="private"
-                       TextAlignment="Left"
-                       Padding="3,0,0,1"
-                       FontWeight="Light"
-                       Foreground="#888888"
-                       FontSize="18"
-                       VerticalAlignment="Bottom"></TextBlock>
-
-            </StackPanel>
-
             <ComboBox Name="mComboBoxScale"
                       x:FieldModifier="private"
                       SelectionChanged="ComboBox_SelectionChanged"
-                      Grid.Column="2"
+                      Grid.Column="0"
                       FontSize="16"
                       FontWeight="SemiBold"
-                      HorizontalAlignment="right"
+                      HorizontalAlignment="Left"
                       HorizontalContentAlignment="Center"
                       VerticalContentAlignment="Center"
                       Foreground="#555555"
@@ -118,6 +92,27 @@
                 <TextBlock Grid.Column="0" TextAlignment="Left" FontWeight="Medium" Foreground="#555555" VerticalAlignment="Center">21</TextBlock>
 
             </ComboBox>
+
+            <DockPanel Grid.Column="2"
+                       VerticalAlignment="Center"
+                       Margin="20,10,15,10">
+
+                <TextBlock Name="mCurrentValue"
+                       x:FieldModifier="private"
+                       Grid.Column="0"
+                       FontWeight="Bold"
+                       Foreground="#555555"
+                       FontSize="24"
+                       VerticalAlignment="Bottom"></TextBlock>
+
+                <TextBlock Name="mUnit"
+                       x:FieldModifier="private"
+                       Padding="5,0,0,1"
+                       FontWeight="Light"
+                       Foreground="#888888"
+                       FontSize="18"
+                       VerticalAlignment="Bottom"></TextBlock>
+            </DockPanel>
 
         </Grid>
     </Grid>

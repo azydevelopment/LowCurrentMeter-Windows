@@ -16,6 +16,7 @@ namespace LowCurrentMeter
 
             mGraphCurrent.SetTitle("Current");
             mGraphCurrent.SetUnit("mA");
+            mGraphCurrent.SetDataMultiplier(1);
             mGraphCurrent.SetMaxPoints(MAX_POINTS + 1);
             mGraphCurrent.SetAxisXRange(0, MAX_POINTS);
             mGraphCurrent.SetAxisYRange(0, 1100);

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Windows.Controls;
-using LiveCharts;
 using LiveCharts.Wpf;
 using System.Collections.Generic;
 using LiveCharts.Geared;
-using System.Windows.Media;
+using System.Threading.Tasks;
 
 namespace LowCurrentMeter
 {
@@ -26,6 +25,11 @@ namespace LowCurrentMeter
         public void SetTitle(String title)
         {
             mTitle.Text = title;
+        }
+
+        public void SetDataMultiplier(double multiplier)
+        {
+            mDataMultiplier = multiplier;
         }
 
         public void SetUnit(String unit)
@@ -55,33 +59,55 @@ namespace LowCurrentMeter
 
         public void AddPoints(List<double> values)
         {
-            mData.AddRange(values);
-            TrimData();
+            if (mDataMultiplier != 1)
+            {
+                for (int i = 0; i < values.Count; i++)
+                {
+                    values[i] *= mDataMultiplier;
+                }
+            }
 
             double currentValue = values[values.Count - 1];
 
-
             if (mUiUpdateCount > UI_UPDATE_PERIOD)
             {
+                double dataSum = 0;
+                int numPoints = Math.Min(DATA_HISTORY_WINDOW, mData.Count);
+                for (int i = 0; i < numPoints; i++)
+                {
+                    dataSum += mData[mData.Count - 1 - i];
+                }
+                double average = dataSum / numPoints;
+
                 App.Current.Dispatcher.BeginInvoke((Action)delegate
                 {
-                    mCurrentValue.Text = currentValue.ToString();
+                    mCurrentValue.Text = average.ToString("N2");
                 }, null);
+
+                mData.AddRange(mDataBuffer);
+                TrimData();
+
+                mDataBuffer.Clear();
+
                 mUiUpdateCount = 0;
             }
             else
             {
+                mDataBuffer.AddRange(values);
+
                 mUiUpdateCount++;
             }
         }
 
         /* PRIVATE */
 
-        private const int DATA_BUFFER_SIZE = 100;
-        private const int UI_UPDATE_PERIOD = 50;
+        private const int DATA_HISTORY_WINDOW = 100;
+        private const int UI_UPDATE_PERIOD = 15;
 
         private long mMaxPoints = 0;
-        public int mUiUpdateCount = 0;
+        private int mUiUpdateCount = 0;
+        private double mDataMultiplier = 1;
+        private List<double> mDataBuffer = new List<double>();
 
         private void TrimData()
         {
