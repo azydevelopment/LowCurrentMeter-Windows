@@ -16,10 +16,11 @@ namespace LowCurrentMeter
 
             mGraphCurrent.SetTitle("Current");
             mGraphCurrent.SetUnit("mA");
-            mGraphCurrent.SetDataMultiplier(1);
+            mGraphCurrent.SetDataMultiplier(0.003454545);
+            mGraphCurrent.SetDataHistoryWindow(100);
             mGraphCurrent.SetMaxPoints(MAX_POINTS + 1);
             mGraphCurrent.SetAxisXRange(0, MAX_POINTS);
-            mGraphCurrent.SetAxisYRange(0, 1100);
+            mGraphCurrent.SetAxisYRange(0, 3);
 
             InitSerialPort();
         }

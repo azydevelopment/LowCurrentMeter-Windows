@@ -32,6 +32,11 @@ namespace LowCurrentMeter
             mDataMultiplier = multiplier;
         }
 
+        public void SetDataHistoryWindow(int numPoints)
+        {
+            mDataHistoryWindow = numPoints;
+        }
+
         public void SetUnit(String unit)
         {
             mUnit.Text = unit;
@@ -72,7 +77,7 @@ namespace LowCurrentMeter
             if (mUiUpdateCount > UI_UPDATE_PERIOD)
             {
                 double dataSum = 0;
-                int numPoints = Math.Min(DATA_HISTORY_WINDOW, mData.Count);
+                int numPoints = Math.Min(mDataHistoryWindow, mData.Count);
                 for (int i = 0; i < numPoints; i++)
                 {
                     dataSum += mData[mData.Count - 1 - i];
@@ -101,11 +106,11 @@ namespace LowCurrentMeter
 
         /* PRIVATE */
 
-        private const int DATA_HISTORY_WINDOW = 100;
         private const int UI_UPDATE_PERIOD = 15;
 
         private long mMaxPoints = 0;
         private int mUiUpdateCount = 0;
+        private int mDataHistoryWindow = 1;
         private double mDataMultiplier = 1;
         private List<double> mDataBuffer = new List<double>();
 
